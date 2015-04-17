@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="
+	http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd
+	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
+
+	<!-- <bean id="byteArray_hmc" class="org.springframework.http.converter.ByteArrayHttpMessageConverter" />
+	<bean id="resource_hmc" class="org.springframework.http.converter.ResourceHttpMessageConverter" />
+	<bean id="source_hmc" class="org.springframework.http.converter.xml.SourceHttpMessageConverter" />
+	<bean id="xmlAwareForm_hmc" class="org.springframework.http.converter.xml.XmlAwareFormHttpMessageConverter" />
+	<bean id="jaxb2RootElement_hmc" class="org.springframework.http.converter.xml.Jaxb2RootElementHttpMessageConverter" />
+	<bean id="jackson_hmc" class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter" />处理json -->
+	<!-- Handles HTTP GET requests for /resources/** by efficiently serving up static resources in the ${webappRoot}/resources/directory -->
+	<mvc:resources mapping="/static/**" location="/static/" />
+
+	<!-- Resolves views selected for rendering by @Controllers to .jsp resources in the /WEB-INF/views directory -->
+	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver" p:order="0">
+		<property name="prefix" value="/Views/" />
+		<property name="suffix" value=".jsp" />
+	</bean>
+
+    <!-- 定义一系列的转换器 -->
+	<bean id="conversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
+		<property name="converters">
+			<set>
+                <!--
+				<bean class="com.grandgenius.core.converters.StringToJodaDateConverter" />
+				-->
+			</set>
+		</property>
+	</bean>
+
+
+    <!-- Only needed because we require fileupload in the org.springframework.samples.mvc.fileupload package -->
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="maxUploadSize">
+			<value>20480000</value><!-- 20M -->
+		</property>
+		<property name="defaultEncoding">
+			<value>UTF-8</value>
+		</property>
+	</bean>
+
+    <!-- Imports user-defined @Controller beans that process client requests -->
+    <import resource="web-controllers.xml" />
+	<!-- <import resource="web-interceptors.xml" /> -->
+</beans>
